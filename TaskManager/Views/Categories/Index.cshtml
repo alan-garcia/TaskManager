@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TaskManager.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="mb-4">Lista de Categorías</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nueva Categoría</a>
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-primary" role="alert">
+        <span>No hay categorías creadas. Intente crear una.</span>
+    </div>
+}
+else
+{
+    <table class="table-bordered table-responsive table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

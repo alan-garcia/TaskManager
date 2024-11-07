@@ -1,0 +1,76 @@
+﻿@model IEnumerable<TaskManager.Models.Task>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="mb-4">Lista de Tareas</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Tarea</a>
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-primary" role="alert">
+        <span>No hay tareas creadas. Intente crear una.</span>
+    </div>
+}
+else
+{
+    <table class="table-bordered table-responsive table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DueDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Priority)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsCompleted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DueDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Priority)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsCompleted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Id)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success ms-2">Modificar</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary ms-2">Ver</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger ms-2">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
