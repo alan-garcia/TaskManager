@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TaskManager.Models.Task>
+﻿@model IEnumerable<TaskViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,10 +10,71 @@
     <a asp-action="Create" class="btn btn-primary">Crear Tarea</a>
 </p>
 
-@if (!Model.Any())
+@if (TempData["TareaEliminar"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <span>@TempData["TareaEliminar"]</span>
+    </div>
+}
+@if (TempData["TareaEliminada"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <span>@TempData["TareaEliminada"]</span>
+    </div>
+}
+@if (TempData["TareaEliminadaFail"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <span>@TempData["TareaEliminadaFail"]</span>
+    </div>
+}
+@if (TempData["TareaModificada"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <span>@TempData["TareaModificada"]</span>
+    </div>
+}
+@if (TempData["TareaCreada"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <span>@TempData["TareaCreada"]</span>
+    </div>
+}
+
+<form asp-action="Index" class="mb-5">
+    <div class="form-group mb-3">
+        <label for="CategoryId">Categoría</label>
+        <select id="CategoryId" name="CategoryId" class="form-control">
+            <option value="">-- Seleccionar Categoría --</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.Id" 
+                    selected="@(category.Id == (int?)ViewData["SelectedCategoryId"] ? true : (bool?)false)">
+                    @category.Name
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="IsCompleted">Estado</label>
+        <select id="IsCompleted" name="IsCompleted" class="form-control">
+            <option value="">-- Seleccionar Estado --</option>
+            @{
+                var isCompletedSelected = ViewData["SelectedIsCompleted"] as bool?;
+            }
+            <option value="true" selected="@(isCompletedSelected == true ? "selected" : "")">Completada</option>
+            <option value="false" selected="@(isCompletedSelected == false ? "selected" : "")">Pendiente</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+@if (TempData["TareasFilterVacias"] != null)
 {
     <div class="alert alert-primary" role="alert">
-        <span>No hay tareas creadas. Intente crear una.</span>
+        <span>@TempData["TareasFilterVacias"]</span>
     </div>
 }
 else
@@ -21,53 +82,29 @@ else
     <table class="table-bordered table-responsive table">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DueDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Priority)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsCompleted)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th></th>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.DueDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Priority)</th>
+                <th>@Html.DisplayNameFor(model => model.IsCompleted)</th>
+                <th>@Html.DisplayNameFor(model => model.Category)</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var task in Model)
             {
                 <tr>
+                    <td>@task.Title</td>
+                    <td>@task.Description</td>
+                    <td>@task.DueDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@task.Priority</td>
+                    <td>@(task.IsCompleted == true ? "Sí" : "No")</td>
+                    <td>@task.Category?.Name</td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DueDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Priority)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsCompleted)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category.Id)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success ms-2">Modificar</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary ms-2">Ver</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger ms-2">Eliminar</a>
+                        <a asp-action="Edit" asp-route-id="@task.Id" class="btn btn-success ms-2">Modificar</a>
+                        <a asp-action="Details" asp-route-id="@task.Id" class="btn btn-primary ms-2">Ver</a>
+                        <a asp-action="Delete" asp-route-id="@task.Id" class="btn btn-danger ms-2">Eliminar</a>
                     </td>
                 </tr>
             }

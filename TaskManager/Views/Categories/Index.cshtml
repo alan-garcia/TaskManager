@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TaskManager.Models.Category>
+﻿@* @model IEnumerable<TaskManager.Models.Category> *@
+@model IEnumerable<CategoryViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,6 +10,31 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Nueva Categoría</a>
 </p>
+
+@if (TempData["CategoriaEliminar"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <span>@TempData["CategoriaEliminar"]</span>
+    </div>
+}
+@if (TempData["CategoriaEliminada"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <span>@TempData["CategoriaEliminada"]</span>
+    </div>
+}
+@if (TempData["CategoriaEliminadaFail"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <span>@TempData["CategoriaEliminadaFail"]</span>
+    </div>
+}
+@if (TempData["CategoriaCreada"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <span>@TempData["CategoriaCreada"]</span>
+    </div>
+}
 
 @if (!Model.Any())
 {

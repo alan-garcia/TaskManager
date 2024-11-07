@@ -1,4 +1,4 @@
-﻿@model TaskManager.Models.Task
+﻿@model TaskViewModel
 
 @{
     ViewData["Title"] = "Modificar";
@@ -32,7 +32,7 @@
             </div>
             <div class="mb-3">
                 <label asp-for="IsCompleted" class="form-label"></label>
-                <input asp-for="IsCompleted" class="form-check-input">
+                <input name="IsCompleted" class="form-check-input" type="checkbox" value="true" @(Model?.IsCompleted == true ? "checked" : "")>
                 <span asp-validation-for="IsCompleted" class="text-danger"></span>
             </div>
             <div class="mb-3">

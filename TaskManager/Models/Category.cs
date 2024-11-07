@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace TaskManager.Models;
 
-namespace TaskManager.Models;
-
-public class Category
+public class Category : IBaseEntity
 {
     public int Id { get; set; }
 
-    [StringLength(100, ErrorMessage = "La categoría no puede exceder de 100 caracteres")]
     public string? Name { get; set; }
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
